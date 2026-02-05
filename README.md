@@ -15,9 +15,8 @@
 ### lazy.nvim
 ```lua
 {
-  "gitliu-my/plugins_dev",
-  config = function(plugin)
-    vim.opt.rtp:append(plugin.dir .. "/nvim/ai-cli-helper.nvim")
+  "gitliu-my/ai-cli-helper.nvim",
+  config = function()
     require("ai_cli_helper").setup({})
   end,
 }
@@ -28,10 +27,8 @@
 ```lua
 return {
   {
-    "gitliu-my/plugins_dev",
-    lazy = false,
-    config = function(plugin)
-      vim.opt.rtp:append(plugin.dir .. "/nvim/ai-cli-helper.nvim")
+    "gitliu-my/ai-cli-helper.nvim",
+    config = function()
       require("ai_cli_helper").setup({
         terminal = {
           name = "cursor-agent",
@@ -46,8 +43,7 @@ return {
 ### packer.nvim
 ```lua
 use({
-  "gitliu-my/plugins_dev",
-  rtp = "nvim/ai-cli-helper.nvim",
+  "gitliu-my/ai-cli-helper.nvim",
 })
 ```
 
