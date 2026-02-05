@@ -27,6 +27,7 @@ local default_config = {
 
 local config = vim.deepcopy(default_config)
 local commands_created = false
+local version = require("ai_cli_helper.version").version
 
 local function notify(message, level)
   vim.notify(message, level or vim.log.levels.INFO, { title = "AI CLI Helper" })
@@ -145,5 +146,11 @@ end
 function M.get_config()
   return config
 end
+
+function M.get_version()
+  return version
+end
+
+M.version = version
 
 return M

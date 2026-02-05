@@ -2,6 +2,8 @@
 
 在 Neovim 中快速获取文件路径（可含行号），并将内容发送到终端输入框，方便配合 AI CLI 工具使用。
 
+版本：`0.1.0`（见 `CHANGELOG.md`）
+
 ## 功能
 - 复制当前文件路径（可含行号，支持选区）
 - 从项目视图复制文件路径（不含行号，适用于 netrw/文件树光标所在文件）
@@ -71,3 +73,7 @@ require("ai_cli_helper").setup({
 ## 输出示例
 - `src/main/.../file.yaml#L9`
 - `src/main/.../file.yaml#L9-L12`
+
+## 版本与更新日志
+- 版本号位于 `lua/ai_cli_helper/version.lua`
+- 更新功能后请同步修改 `CHANGELOG.md`
