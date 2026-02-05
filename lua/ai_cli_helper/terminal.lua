@@ -16,9 +16,10 @@ local function find_terminal_win(bufnr)
   if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
     return nil
   end
-  local wins = vim.fn.win_findbuf(bufnr)
-  if wins and #wins > 0 then
-    return wins[1]
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    if vim.api.nvim_win_get_buf(win) == bufnr then
+      return win
+    end
   end
   return nil
 end
@@ -32,6 +33,9 @@ local function apply_terminal_keymaps(cfg, bufnr)
   vim.keymap.set("t", "<C-j>", [[<C-\><C-n><C-w>j]], opts)
   vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], opts)
   vim.keymap.set("t", "<C-l>", [[<C-\><C-n><C-w>l]], opts)
+  if cfg.terminal.escape_exit ~= false then
+    vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]], opts)
+  end
 end
 
 local function open_terminal_window(cfg, bufnr)

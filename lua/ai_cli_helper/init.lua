@@ -10,6 +10,7 @@ local default_config = {
     focus = true,
     send_delay_ms = 400,
     window_nav = true,
+    escape_exit = true,
   },
   path = {
     root_strategy = "git", -- "git" | "cwd" | "none"
@@ -48,20 +49,24 @@ local function apply_keymaps()
     vim.keymap.set("n", prefix, function() end, vim.tbl_extend("force", opts, { desc = "AI CLI Helper: prefix" }))
   end
 
+  local path = require("ai_cli_helper.path")
+
   vim.keymap.set("n", config.keymaps.copy_path_with_lines, function()
     M.copy_path_with_lines(false)
   end, vim.tbl_extend("force", opts, { desc = "AI CLI Helper: Copy path with lines" }))
 
-  vim.keymap.set("v", config.keymaps.copy_path_with_lines, function()
-    M.copy_path_with_lines(true)
+  vim.keymap.set("x", config.keymaps.copy_path_with_lines, function()
+    local range = path.get_visual_range_live()
+    M.copy_path_with_lines(true, range)
   end, vim.tbl_extend("force", opts, { desc = "AI CLI Helper: Copy path with lines (visual)" }))
 
   vim.keymap.set("n", config.keymaps.send_path_with_lines, function()
     M.send_path_with_lines(false)
   end, vim.tbl_extend("force", opts, { desc = "AI CLI Helper: Send path with lines" }))
 
-  vim.keymap.set("v", config.keymaps.send_path_with_lines, function()
-    M.send_path_with_lines(true)
+  vim.keymap.set("x", config.keymaps.send_path_with_lines, function()
+    local range = path.get_visual_range_live()
+    M.send_path_with_lines(true, range)
   end, vim.tbl_extend("force", opts, { desc = "AI CLI Helper: Send path with lines (visual)" }))
 
   vim.keymap.set("n", config.keymaps.copy_file_path, function()
@@ -109,8 +114,8 @@ function M.setup(opts)
   create_commands()
 end
 
-function M.copy_path_with_lines(use_visual)
-  local path = require("ai_cli_helper.path").get_path_with_lines(config, use_visual)
+function M.copy_path_with_lines(use_visual, range)
+  local path = require("ai_cli_helper.path").get_path_with_lines(config, use_visual, range)
   if not path then
     notify("无法获取文件路径。", vim.log.levels.WARN)
     return
@@ -119,8 +124,8 @@ function M.copy_path_with_lines(use_visual)
   notify("已复制： " .. path)
 end
 
-function M.send_path_with_lines(use_visual)
-  local path = require("ai_cli_helper.path").get_path_with_lines(config, use_visual)
+function M.send_path_with_lines(use_visual, range)
+  local path = require("ai_cli_helper.path").get_path_with_lines(config, use_visual, range)
   if not path then
     notify("无法获取文件路径。", vim.log.levels.WARN)
     return
