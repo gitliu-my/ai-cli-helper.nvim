@@ -48,12 +48,15 @@ local function apply_window_options(bufnr, cfg)
   end
 end
 
-local function open_terminal_window(cfg, bufnr)
+local function open_terminal_window(cfg, bufnr, allow_tab_jump)
   local prev_win = vim.api.nvim_get_current_win()
   local existing, existing_tab = find_terminal_win(bufnr)
   if existing then
-    if existing_tab then
+    if allow_tab_jump and existing_tab then
       vim.api.nvim_set_current_tabpage(existing_tab)
+    end
+    if not allow_tab_jump then
+      return prev_win
     end
     vim.api.nvim_set_current_win(existing)
     if cfg.terminal.open_cmd and cfg.terminal.open_cmd:find("vsplit", 1, true) then
@@ -86,7 +89,7 @@ local function open_terminal_window(cfg, bufnr)
 end
 
 local function create_terminal(cfg)
-  open_terminal_window(cfg, nil)
+  open_terminal_window(cfg, nil, true)
   local bufnr = vim.api.nvim_get_current_buf()
   vim.bo[bufnr].bufhidden = "hide"
   vim.bo[bufnr].swapfile = false
@@ -105,7 +108,7 @@ end
 local function ensure_terminal(cfg)
   local bufnr = find_terminal_buf(cfg.terminal.name)
   if bufnr then
-    open_terminal_window(cfg, bufnr)
+    open_terminal_window(cfg, bufnr, true)
     apply_terminal_keymaps(cfg, bufnr)
     return bufnr, false
   end
@@ -183,11 +186,35 @@ end
 function M.focus(cfg)
   local bufnr = find_terminal_buf(cfg.terminal.name)
   if bufnr then
-    open_terminal_window(cfg, bufnr)
+    open_terminal_window(cfg, bufnr, true)
     apply_terminal_keymaps(cfg, bufnr)
+    vim.cmd("startinsert")
     return
   end
   create_terminal(cfg)
+  vim.cmd("startinsert")
+end
+
+function M.toggle(cfg)
+  local bufnr = find_terminal_buf(cfg.terminal.name)
+  if bufnr then
+    local win, tab = find_terminal_win(bufnr)
+    local cur_tab = vim.api.nvim_get_current_tabpage()
+    if win and tab == cur_tab then
+      pcall(vim.api.nvim_win_close, win, true)
+      return
+    end
+    open_terminal_window(cfg, bufnr, false)
+    if vim.api.nvim_win_get_buf(vim.api.nvim_get_current_win()) ~= bufnr then
+      vim.api.nvim_set_current_buf(bufnr)
+      apply_window_options(bufnr, cfg)
+      apply_terminal_keymaps(cfg, bufnr)
+    end
+    vim.cmd("startinsert")
+    return
+  end
+  create_terminal(cfg)
+  vim.cmd("startinsert")
 end
 
 return M

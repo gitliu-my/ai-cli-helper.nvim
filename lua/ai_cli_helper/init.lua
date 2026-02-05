@@ -25,7 +25,8 @@ local default_config = {
     send_path_with_lines = "<leader>cas",
     copy_file_path = "<leader>caC",
     send_file_path = "<leader>caS",
-    focus_terminal = "<leader>cat",
+    focus_terminal = "<leader>caf",
+    toggle_terminal = "<leader>cat",
   },
 }
 
@@ -86,6 +87,10 @@ local function apply_keymaps()
   vim.keymap.set("n", config.keymaps.focus_terminal, function()
     M.focus_terminal()
   end, vim.tbl_extend("force", opts, { desc = "AI CLI Helper: Focus terminal" }))
+
+  vim.keymap.set("n", config.keymaps.toggle_terminal, function()
+    M.toggle_terminal()
+  end, vim.tbl_extend("force", opts, { desc = "AI CLI Helper: Toggle terminal" }))
 end
 
 local function create_commands()
@@ -110,6 +115,10 @@ local function create_commands()
 
   vim.api.nvim_create_user_command("AiCliHelperFocusTerminal", function()
     M.focus_terminal()
+  end, {})
+
+  vim.api.nvim_create_user_command("AiCliHelperToggleTerminal", function()
+    M.toggle_terminal()
   end, {})
   commands_created = true
 end
@@ -160,6 +169,10 @@ end
 
 function M.focus_terminal()
   require("ai_cli_helper.terminal").focus(config)
+end
+
+function M.toggle_terminal()
+  require("ai_cli_helper.terminal").toggle(config)
 end
 
 function M.get_config()

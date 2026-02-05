@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.7] - 2026-02-04
+### Added
+- Toggle terminal command and keymap.
+- Focus now always enters terminal mode.
+
+### Changed
+- Terminal focus keymap moved to <leader>caf.
+- Terminal toggle keymap is <leader>cat.
+
 ## [0.1.6] - 2026-02-04
 ### Fixed
 - Avoid stale visual ranges by only using live range in Visual mode.
@@ -49,7 +58,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Focus cursor-agent terminal.
 - Default keymaps under `<leader>a`.
 
-[Unreleased]: https://example.com/compare/0.1.6...HEAD
+[Unreleased]: https://example.com/compare/0.1.7...HEAD
+[0.1.7]: https://example.com/compare/0.1.6...0.1.7
 [0.1.6]: https://example.com/compare/0.1.5...0.1.6
 [0.1.5]: https://example.com/compare/0.1.4...0.1.5
 [0.1.4]: https://example.com/compare/0.1.3...0.1.4

@@ -2,7 +2,7 @@
 
 在 Neovim 中快速获取文件路径（可含行号），并将内容发送到终端输入框，方便配合 AI CLI 工具使用。
 
-版本：`0.1.6`（见 `CHANGELOG.md`）
+版本：`0.1.7`（见 `CHANGELOG.md`）
 
 ## 功能
 - 复制当前文件路径（可含行号，支持选区）
@@ -55,7 +55,8 @@ use({
 - Send File Path：`<leader>caS`
 - Copy Path With Lines：`<leader>cac`
 - Copy File Path：`<leader>caC`
-- Focus Terminal：`<leader>cat`
+- Focus Terminal：`<leader>caf`
+- Toggle Terminal：`<leader>cat`
 
 ## 命令
 - `:AiCliHelperCopyPathWithLines`
@@ -63,6 +64,7 @@ use({
 - `:AiCliHelperCopyFilePath`
 - `:AiCliHelperSendFilePath`
 - `:AiCliHelperFocusTerminal`
+- `:AiCliHelperToggleTerminal`
 
 ## 配置
 ```lua
@@ -90,7 +92,8 @@ require("ai_cli_helper").setup({
     send_path_with_lines = "<leader>cas",
     copy_file_path = "<leader>caC",
     send_file_path = "<leader>caS",
-    focus_terminal = "<leader>cat",
+    focus_terminal = "<leader>caf",
+    toggle_terminal = "<leader>cat",
   },
 })
 ```
