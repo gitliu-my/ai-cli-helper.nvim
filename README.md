@@ -16,7 +16,7 @@
 ```lua
 {
   "gitliu-my/plugins_dev",
-  subdir = "nvim/ai-cli-helper.nvim",
+  rtp = "nvim/ai-cli-helper.nvim",
 }
 ```
 
@@ -26,7 +26,7 @@
 return {
   {
     "gitliu-my/plugins_dev",
-    subdir = "nvim/ai-cli-helper.nvim",
+    rtp = "nvim/ai-cli-helper.nvim",
     config = function()
       require("ai_cli_helper").setup({
         terminal = {
