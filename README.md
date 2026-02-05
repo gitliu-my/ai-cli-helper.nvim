@@ -20,6 +20,25 @@
 }
 ```
 
+### LazyVim 快速配置
+在 `~/.config/nvim/lua/plugins/ai-cli-helper.lua` 新建配置：
+```lua
+return {
+  {
+    "gitliu-my/plugins_dev",
+    subdir = "nvim/ai-cli-helper.nvim",
+    config = function()
+      require("ai_cli_helper").setup({
+        terminal = {
+          name = "cursor-agent",
+          start_command = "cursor-agent",
+        },
+      })
+    end,
+  },
+}
+```
+
 ### packer.nvim
 ```lua
 use({
