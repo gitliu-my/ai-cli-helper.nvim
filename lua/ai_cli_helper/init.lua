@@ -19,9 +19,9 @@ local default_config = {
   keymaps = {
     enabled = true,
     prefix = "<leader>ca",
-    copy_path_with_lines = "<leader>cap",
+    copy_path_with_lines = "<leader>cac",
     send_path_with_lines = "<leader>cas",
-    copy_file_path = "<leader>caP",
+    copy_file_path = "<leader>caC",
     send_file_path = "<leader>caS",
     focus_terminal = "<leader>cat",
   },

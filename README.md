@@ -55,8 +55,8 @@ use({
 - 前缀：`<leader>ca`
 - Send Path With Lines：`<leader>cas`
 - Send File Path：`<leader>caS`
-- Copy Path With Lines：`<leader>cap`
-- Copy File Path：`<leader>caP`
+- Copy Path With Lines：`<leader>cac`
+- Copy File Path：`<leader>caC`
 - Focus Terminal：`<leader>cat`
 
 ## 命令
@@ -86,9 +86,9 @@ require("ai_cli_helper").setup({
   keymaps = {
     enabled = true,
     prefix = "<leader>ca",
-    copy_path_with_lines = "<leader>cap",
+    copy_path_with_lines = "<leader>cac",
     send_path_with_lines = "<leader>cas",
-    copy_file_path = "<leader>caP",
+    copy_file_path = "<leader>caC",
     send_file_path = "<leader>caS",
     focus_terminal = "<leader>cat",
   },
