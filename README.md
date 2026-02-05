@@ -52,11 +52,12 @@ use({
 ```
 
 ## 默认快捷键
-- Send Path With Lines：`<leader>as`
-- Copy Path With Lines：`<leader>ap`
-- Copy File Path：`<leader>aP`
-- Send File Path：`<leader>aS`
-- Focus Terminal：`<leader>at`
+- 前缀：`<leader>ca`
+- Send Path With Lines：`<leader>cas`
+- Send File Path：`<leader>caS`
+- Copy Path With Lines：`<leader>cap`
+- Copy File Path：`<leader>caP`
+- Focus Terminal：`<leader>cat`
 
 ## 命令
 - `:AiCliHelperCopyPathWithLines`
@@ -71,8 +72,8 @@ require("ai_cli_helper").setup({
   terminal = {
     name = "cursor-agent",
     start_command = "cursor-agent",
-    open_cmd = "botright split",
-    height = 12,
+    open_cmd = "botright vsplit",
+    width = 80,
     focus = true,
     send_delay_ms = 400,
   },
@@ -84,11 +85,12 @@ require("ai_cli_helper").setup({
   },
   keymaps = {
     enabled = true,
-    copy_path_with_lines = "<leader>ap",
-    send_path_with_lines = "<leader>as",
-    copy_file_path = "<leader>aP",
-    send_file_path = "<leader>aS",
-    focus_terminal = "<leader>at",
+    prefix = "<leader>ca",
+    copy_path_with_lines = "<leader>cap",
+    send_path_with_lines = "<leader>cas",
+    copy_file_path = "<leader>caP",
+    send_file_path = "<leader>caS",
+    focus_terminal = "<leader>cat",
   },
 })
 ```

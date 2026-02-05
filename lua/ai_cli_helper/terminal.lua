@@ -17,7 +17,11 @@ local function open_terminal_window(cfg, bufnr)
   if cfg.terminal.open_cmd and cfg.terminal.open_cmd ~= "" then
     vim.cmd(cfg.terminal.open_cmd)
   end
-  if cfg.terminal.height and cfg.terminal.height > 0 then
+  if cfg.terminal.open_cmd and cfg.terminal.open_cmd:find("vsplit", 1, true) then
+    if cfg.terminal.width and cfg.terminal.width > 0 then
+      pcall(vim.cmd, "vertical resize " .. cfg.terminal.width)
+    end
+  elseif cfg.terminal.height and cfg.terminal.height > 0 then
     pcall(vim.cmd, "resize " .. cfg.terminal.height)
   end
   if bufnr then

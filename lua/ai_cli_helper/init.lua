@@ -4,8 +4,9 @@ local default_config = {
   terminal = {
     name = "cursor-agent",
     start_command = "cursor-agent",
-    open_cmd = "botright split",
+    open_cmd = "botright vsplit",
     height = 12,
+    width = 80,
     focus = true,
     send_delay_ms = 400,
   },
@@ -17,11 +18,12 @@ local default_config = {
   },
   keymaps = {
     enabled = true,
-    copy_path_with_lines = "<leader>ap",
-    send_path_with_lines = "<leader>as",
-    copy_file_path = "<leader>aP",
-    send_file_path = "<leader>aS",
-    focus_terminal = "<leader>at",
+    prefix = "<leader>ca",
+    copy_path_with_lines = "<leader>cap",
+    send_path_with_lines = "<leader>cas",
+    copy_file_path = "<leader>caP",
+    send_file_path = "<leader>caS",
+    focus_terminal = "<leader>cat",
   },
 }
 
@@ -39,6 +41,11 @@ local function apply_keymaps()
   end
 
   local opts = { noremap = true, silent = true }
+
+  local prefix = config.keymaps.prefix
+  if prefix and prefix ~= "" then
+    vim.keymap.set("n", prefix, function() end, vim.tbl_extend("force", opts, { desc = "AI CLI Helper: prefix" }))
+  end
 
   vim.keymap.set("n", config.keymaps.copy_path_with_lines, function()
     M.copy_path_with_lines(false)
