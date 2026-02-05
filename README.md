@@ -16,7 +16,10 @@
 ```lua
 {
   "gitliu-my/plugins_dev",
-  rtp = "nvim/ai-cli-helper.nvim",
+  config = function(plugin)
+    vim.opt.rtp:append(plugin.dir .. "/nvim/ai-cli-helper.nvim")
+    require("ai_cli_helper").setup({})
+  end,
 }
 ```
 
@@ -26,8 +29,9 @@
 return {
   {
     "gitliu-my/plugins_dev",
-    rtp = "nvim/ai-cli-helper.nvim",
-    config = function()
+    lazy = false,
+    config = function(plugin)
+      vim.opt.rtp:append(plugin.dir .. "/nvim/ai-cli-helper.nvim")
       require("ai_cli_helper").setup({
         terminal = {
           name = "cursor-agent",
