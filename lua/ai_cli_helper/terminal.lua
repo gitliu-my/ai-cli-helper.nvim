@@ -142,6 +142,16 @@ local function ensure_trailing_space(text)
   return text .. " "
 end
 
+local function ensure_at_prefix(text)
+  if text == "" then
+    return "@"
+  end
+  if text:sub(1, 1) == "@" then
+    return text
+  end
+  return "@" .. text
+end
+
 function M.send(text, cfg)
   if not text or text == "" then
     return
@@ -153,7 +163,7 @@ function M.send(text, cfg)
   prev_win = vim.api.nvim_get_current_win()
   bufnr, created = ensure_terminal(cfg)
 
-  local payload = ensure_trailing_space(text)
+  local payload = ensure_trailing_space(ensure_at_prefix(text))
   if created then
     vim.defer_fn(function()
       if vim.api.nvim_buf_is_valid(bufnr) then

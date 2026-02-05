@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-02-04
+### Added
+- Prefix sent paths with "@" for cursor-agent.
+
 ## [0.1.4] - 2026-02-04
 ### Fixed
 - Visual selection now uses live line range for all visual modes.
@@ -40,7 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Focus cursor-agent terminal.
 - Default keymaps under `<leader>a`.
 
-[Unreleased]: https://example.com/compare/0.1.4...HEAD
+[Unreleased]: https://example.com/compare/0.1.5...HEAD
+[0.1.5]: https://example.com/compare/0.1.4...0.1.5
 [0.1.4]: https://example.com/compare/0.1.3...0.1.4
 [0.1.3]: https://example.com/compare/0.1.2...0.1.3
 [0.1.2]: https://example.com/compare/0.1.1...0.1.2
