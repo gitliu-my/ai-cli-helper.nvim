@@ -46,12 +46,6 @@ local function normalize_range(start_line, end_line)
   return start_line, end_line
 end
 
-local function get_visual_range_marks()
-  local start = vim.fn.getpos("'<")
-  local finish = vim.fn.getpos("'>")
-  return normalize_range(start[2], finish[2])
-end
-
 function M.get_visual_range_live()
   local start_line = vim.fn.line("v")
   local end_line = vim.fn.line(".")
@@ -96,8 +90,6 @@ function M.get_path_with_lines(config, use_visual, range)
   local end_line
   if range and range[1] and range[2] then
     start_line, end_line = range[1], range[2]
-  elseif use_visual then
-    start_line, end_line = get_visual_range_marks()
   end
   if not start_line then
     start_line = vim.api.nvim_win_get_cursor(0)[1]

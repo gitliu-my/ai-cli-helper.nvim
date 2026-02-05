@@ -96,6 +96,7 @@ local function create_terminal(cfg)
 
   vim.api.nvim_buf_set_var(bufnr, "ai_cli_helper_terminal_name", cfg.terminal.name)
   vim.api.nvim_buf_set_var(bufnr, "ai_cli_helper_terminal_job", job_id)
+  apply_window_options(bufnr, cfg)
   apply_terminal_keymaps(cfg, bufnr)
 
   return bufnr, true

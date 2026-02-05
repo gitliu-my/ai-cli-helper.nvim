@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-02-04
+### Fixed
+- Avoid stale visual ranges by only using live range in Visual mode.
+- Set terminal buffer name and hide it from buffer lists.
+
 ## [0.1.5] - 2026-02-04
 ### Added
 - Prefix sent paths with "@" for cursor-agent.
@@ -44,7 +49,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Focus cursor-agent terminal.
 - Default keymaps under `<leader>a`.
 
-[Unreleased]: https://example.com/compare/0.1.5...HEAD
+[Unreleased]: https://example.com/compare/0.1.6...HEAD
+[0.1.6]: https://example.com/compare/0.1.5...0.1.6
 [0.1.5]: https://example.com/compare/0.1.4...0.1.5
 [0.1.4]: https://example.com/compare/0.1.3...0.1.4
 [0.1.3]: https://example.com/compare/0.1.2...0.1.3
