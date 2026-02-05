@@ -1,0 +1,122 @@
+local M = {}
+
+local function find_terminal_buf(name)
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(bufnr) and vim.bo[bufnr].buftype == "terminal" then
+      local ok, value = pcall(vim.api.nvim_buf_get_var, bufnr, "ai_cli_helper_terminal_name")
+      if ok and value == name then
+        return bufnr
+      end
+    end
+  end
+  return nil
+end
+
+local function open_terminal_window(cfg, bufnr)
+  local prev_win = vim.api.nvim_get_current_win()
+  if cfg.terminal.open_cmd and cfg.terminal.open_cmd ~= "" then
+    vim.cmd(cfg.terminal.open_cmd)
+  end
+  if cfg.terminal.height and cfg.terminal.height > 0 then
+    pcall(vim.cmd, "resize " .. cfg.terminal.height)
+  end
+  if bufnr then
+    vim.api.nvim_set_current_buf(bufnr)
+  else
+    vim.cmd("enew")
+  end
+  return prev_win
+end
+
+local function create_terminal(cfg)
+  open_terminal_window(cfg, nil)
+  local bufnr = vim.api.nvim_get_current_buf()
+  vim.bo[bufnr].bufhidden = "hide"
+  vim.bo[bufnr].swapfile = false
+
+  local command = cfg.terminal.start_command
+  local job_id = vim.fn.termopen(command)
+
+  vim.api.nvim_buf_set_var(bufnr, "ai_cli_helper_terminal_name", cfg.terminal.name)
+  vim.api.nvim_buf_set_var(bufnr, "ai_cli_helper_terminal_job", job_id)
+
+  return bufnr, true
+end
+
+local function ensure_terminal(cfg)
+  local bufnr = find_terminal_buf(cfg.terminal.name)
+  if bufnr then
+    open_terminal_window(cfg, bufnr)
+    return bufnr, false
+  end
+  return create_terminal(cfg)
+end
+
+local function get_job_id(bufnr)
+  local ok, job_id = pcall(vim.api.nvim_buf_get_var, bufnr, "terminal_job_id")
+  if ok and job_id then
+    return job_id
+  end
+  local ok2, stored = pcall(vim.api.nvim_buf_get_var, bufnr, "ai_cli_helper_terminal_job")
+  if ok2 and stored then
+    return stored
+  end
+  return nil
+end
+
+local function send_to_terminal(bufnr, text)
+  local job_id = get_job_id(bufnr)
+  if not job_id then
+    vim.notify("Terminal 通道不可用。", vim.log.levels.ERROR, { title = "AI CLI Helper" })
+    return
+  end
+  vim.fn.chansend(job_id, text)
+end
+
+local function ensure_trailing_space(text)
+  if text == "" then
+    return " "
+  end
+  if text:sub(-1) == " " then
+    return text
+  end
+  return text .. " "
+end
+
+function M.send(text, cfg)
+  if not text or text == "" then
+    return
+  end
+
+  local prev_win
+  local bufnr
+  local created
+  prev_win = vim.api.nvim_get_current_win()
+  bufnr, created = ensure_terminal(cfg)
+
+  local payload = ensure_trailing_space(text)
+  if created then
+    vim.defer_fn(function()
+      if vim.api.nvim_buf_is_valid(bufnr) then
+        send_to_terminal(bufnr, payload)
+      end
+    end, cfg.terminal.send_delay_ms or 400)
+  else
+    send_to_terminal(bufnr, payload)
+  end
+
+  if not cfg.terminal.focus and vim.api.nvim_win_is_valid(prev_win) then
+    vim.api.nvim_set_current_win(prev_win)
+  end
+end
+
+function M.focus(cfg)
+  local bufnr = find_terminal_buf(cfg.terminal.name)
+  if bufnr then
+    open_terminal_window(cfg, bufnr)
+    return
+  end
+  create_terminal(cfg)
+end
+
+return M
