@@ -37,8 +37,19 @@ local function relativize(path, root)
 end
 
 local function get_visual_range()
-  local start = vim.fn.getpos("'<")
-  local finish = vim.fn.getpos("'>")
+  local mode = vim.fn.mode()
+  local is_visual = mode:sub(1, 1) == "v" or mode == "V" or mode == "\22"
+
+  local start
+  local finish
+  if is_visual then
+    start = vim.fn.getpos("v")
+    finish = vim.fn.getpos(".")
+  else
+    start = vim.fn.getpos("'<")
+    finish = vim.fn.getpos("'>")
+  end
+
   local start_line = start[2]
   local end_line = finish[2]
   if start_line == 0 or end_line == 0 then
