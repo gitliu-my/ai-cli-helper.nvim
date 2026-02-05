@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-02-04
+### Fixed
+- Visual selection now uses live line range for all visual modes.
+- Reuse existing terminal window across tabs and prevent buffer replacement.
+- Exit Visual mode after send/copy from Visual mode.
+
 ## [0.1.3] - 2026-02-04
 ### Fixed
 - Visual selection now uses live range from Visual mode mappings.
@@ -34,7 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Focus cursor-agent terminal.
 - Default keymaps under `<leader>a`.
 
-[Unreleased]: https://example.com/compare/0.1.3...HEAD
+[Unreleased]: https://example.com/compare/0.1.4...HEAD
+[0.1.4]: https://example.com/compare/0.1.3...0.1.4
 [0.1.3]: https://example.com/compare/0.1.2...0.1.3
 [0.1.2]: https://example.com/compare/0.1.1...0.1.2
 [0.1.1]: https://example.com/compare/0.1.0...0.1.1

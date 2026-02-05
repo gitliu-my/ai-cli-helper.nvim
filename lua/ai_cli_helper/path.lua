@@ -53,9 +53,9 @@ local function get_visual_range_marks()
 end
 
 function M.get_visual_range_live()
-  local start = vim.fn.getpos("v")
-  local finish = vim.fn.getpos(".")
-  local s, e = normalize_range(start[2], finish[2])
+  local start_line = vim.fn.line("v")
+  local end_line = vim.fn.line(".")
+  local s, e = normalize_range(start_line, end_line)
   return { s, e }
 end
 

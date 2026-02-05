@@ -50,6 +50,10 @@ local function apply_keymaps()
   end
 
   local path = require("ai_cli_helper.path")
+  local function exit_visual()
+    local esc = vim.api.nvim_replace_termcodes("<Esc>", true, false, true)
+    vim.api.nvim_feedkeys(esc, "n", false)
+  end
 
   vim.keymap.set("n", config.keymaps.copy_path_with_lines, function()
     M.copy_path_with_lines(false)
@@ -58,6 +62,7 @@ local function apply_keymaps()
   vim.keymap.set("x", config.keymaps.copy_path_with_lines, function()
     local range = path.get_visual_range_live()
     M.copy_path_with_lines(true, range)
+    exit_visual()
   end, vim.tbl_extend("force", opts, { desc = "AI CLI Helper: Copy path with lines (visual)" }))
 
   vim.keymap.set("n", config.keymaps.send_path_with_lines, function()
@@ -67,6 +72,7 @@ local function apply_keymaps()
   vim.keymap.set("x", config.keymaps.send_path_with_lines, function()
     local range = path.get_visual_range_live()
     M.send_path_with_lines(true, range)
+    exit_visual()
   end, vim.tbl_extend("force", opts, { desc = "AI CLI Helper: Send path with lines (visual)" }))
 
   vim.keymap.set("n", config.keymaps.copy_file_path, function()

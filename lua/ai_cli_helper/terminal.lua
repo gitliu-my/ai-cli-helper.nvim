@@ -14,14 +14,14 @@ end
 
 local function find_terminal_win(bufnr)
   if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
-    return nil
+    return nil, nil
   end
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     if vim.api.nvim_win_get_buf(win) == bufnr then
-      return win
+      return win, vim.api.nvim_win_get_tabpage(win)
     end
   end
-  return nil
+  return nil, nil
 end
 
 local function apply_terminal_keymaps(cfg, bufnr)
@@ -38,10 +38,23 @@ local function apply_terminal_keymaps(cfg, bufnr)
   end
 end
 
+local function apply_window_options(bufnr, cfg)
+  local win = vim.api.nvim_get_current_win()
+  pcall(vim.api.nvim_win_set_option, win, "winfixbuf", true)
+  if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
+    pcall(vim.api.nvim_buf_set_option, bufnr, "buflisted", false)
+    pcall(vim.api.nvim_buf_set_option, bufnr, "bufhidden", "hide")
+    pcall(vim.api.nvim_buf_set_name, bufnr, cfg.terminal.name)
+  end
+end
+
 local function open_terminal_window(cfg, bufnr)
   local prev_win = vim.api.nvim_get_current_win()
-  local existing = find_terminal_win(bufnr)
+  local existing, existing_tab = find_terminal_win(bufnr)
   if existing then
+    if existing_tab then
+      vim.api.nvim_set_current_tabpage(existing_tab)
+    end
     vim.api.nvim_set_current_win(existing)
     if cfg.terminal.open_cmd and cfg.terminal.open_cmd:find("vsplit", 1, true) then
       if cfg.terminal.width and cfg.terminal.width > 0 then
@@ -50,6 +63,7 @@ local function open_terminal_window(cfg, bufnr)
     elseif cfg.terminal.height and cfg.terminal.height > 0 then
       pcall(vim.cmd, "resize " .. cfg.terminal.height)
     end
+    apply_window_options(bufnr, cfg)
     return prev_win
   end
   if cfg.terminal.open_cmd and cfg.terminal.open_cmd ~= "" then
@@ -67,6 +81,7 @@ local function open_terminal_window(cfg, bufnr)
   else
     vim.cmd("enew")
   end
+  apply_window_options(bufnr, cfg)
   return prev_win
 end
 
