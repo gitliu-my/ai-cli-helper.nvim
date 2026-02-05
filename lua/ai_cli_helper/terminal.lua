@@ -12,8 +12,42 @@ local function find_terminal_buf(name)
   return nil
 end
 
+local function find_terminal_win(bufnr)
+  if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
+    return nil
+  end
+  local wins = vim.fn.win_findbuf(bufnr)
+  if wins and #wins > 0 then
+    return wins[1]
+  end
+  return nil
+end
+
+local function apply_terminal_keymaps(cfg, bufnr)
+  if cfg.terminal.window_nav == false then
+    return
+  end
+  local opts = { buffer = bufnr, noremap = true, silent = true }
+  vim.keymap.set("t", "<C-h>", [[<C-\><C-n><C-w>h]], opts)
+  vim.keymap.set("t", "<C-j>", [[<C-\><C-n><C-w>j]], opts)
+  vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], opts)
+  vim.keymap.set("t", "<C-l>", [[<C-\><C-n><C-w>l]], opts)
+end
+
 local function open_terminal_window(cfg, bufnr)
   local prev_win = vim.api.nvim_get_current_win()
+  local existing = find_terminal_win(bufnr)
+  if existing then
+    vim.api.nvim_set_current_win(existing)
+    if cfg.terminal.open_cmd and cfg.terminal.open_cmd:find("vsplit", 1, true) then
+      if cfg.terminal.width and cfg.terminal.width > 0 then
+        pcall(vim.cmd, "vertical resize " .. cfg.terminal.width)
+      end
+    elseif cfg.terminal.height and cfg.terminal.height > 0 then
+      pcall(vim.cmd, "resize " .. cfg.terminal.height)
+    end
+    return prev_win
+  end
   if cfg.terminal.open_cmd and cfg.terminal.open_cmd ~= "" then
     vim.cmd(cfg.terminal.open_cmd)
   end
@@ -43,6 +77,7 @@ local function create_terminal(cfg)
 
   vim.api.nvim_buf_set_var(bufnr, "ai_cli_helper_terminal_name", cfg.terminal.name)
   vim.api.nvim_buf_set_var(bufnr, "ai_cli_helper_terminal_job", job_id)
+  apply_terminal_keymaps(cfg, bufnr)
 
   return bufnr, true
 end
@@ -51,6 +86,7 @@ local function ensure_terminal(cfg)
   local bufnr = find_terminal_buf(cfg.terminal.name)
   if bufnr then
     open_terminal_window(cfg, bufnr)
+    apply_terminal_keymaps(cfg, bufnr)
     return bufnr, false
   end
   return create_terminal(cfg)
@@ -118,6 +154,7 @@ function M.focus(cfg)
   local bufnr = find_terminal_buf(cfg.terminal.name)
   if bufnr then
     open_terminal_window(cfg, bufnr)
+    apply_terminal_keymaps(cfg, bufnr)
     return
   end
   create_terminal(cfg)

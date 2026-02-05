@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-02-04
+### Added
+- Terminal window navigation with Ctrl+h/j/k/l.
+
+### Changed
+- Reuse existing terminal window instead of opening duplicates.
+- Default terminal split to right side.
+
 ## [0.1.0] - 2026-02-04
 ### Added
 - Copy path with lines from current buffer (normal/visual).
@@ -14,5 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Focus cursor-agent terminal.
 - Default keymaps under `<leader>a`.
 
-[Unreleased]: https://example.com/compare/0.1.0...HEAD
+[Unreleased]: https://example.com/compare/0.1.1...HEAD
+[0.1.1]: https://example.com/compare/0.1.0...0.1.1
 [0.1.0]: https://example.com/releases/0.1.0

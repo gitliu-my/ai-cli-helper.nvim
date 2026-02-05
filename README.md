@@ -2,13 +2,14 @@
 
 在 Neovim 中快速获取文件路径（可含行号），并将内容发送到终端输入框，方便配合 AI CLI 工具使用。
 
-版本：`0.1.0`（见 `CHANGELOG.md`）
+版本：`0.1.1`（见 `CHANGELOG.md`）
 
 ## 功能
 - 复制当前文件路径（可含行号，支持选区）
 - 从项目视图复制文件路径（不含行号，适用于 netrw/文件树光标所在文件）
 - 发送路径到 `cursor-agent` 终端输入框（不自动执行）
 - 聚焦到 `cursor-agent` 终端
+- 终端内支持 `Ctrl+h/j/k/l` 切换窗口
 - 若终端不存在，会自动创建并启动 `cursor-agent`
 
 ## 安装
@@ -72,6 +73,7 @@ require("ai_cli_helper").setup({
     width = 80,
     focus = true,
     send_delay_ms = 400,
+    window_nav = true,
   },
   path = {
     root_strategy = "git", -- "git" | "cwd" | "none"

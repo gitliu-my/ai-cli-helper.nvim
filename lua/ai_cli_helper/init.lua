@@ -9,6 +9,7 @@ local default_config = {
     width = 80,
     focus = true,
     send_delay_ms = 400,
+    window_nav = true,
   },
   path = {
     root_strategy = "git", -- "git" | "cwd" | "none"
